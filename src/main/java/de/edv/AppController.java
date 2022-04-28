@@ -1,6 +1,7 @@
 package de.edv;
 
-import de.edv.gui.FilmGUI;
+import de.edv.gui.SupplierGUI;
+import de.edv.gui.ProductGUI;
 import de.edv.model.db.DBConnector;
 import de.edv.model.db.DBConnectorMySQL;
 
@@ -16,7 +17,8 @@ public class AppController {
 
     // Adapter
     // GUIs
-    private FilmGUI filmGUI;
+    private ProductGUI filmGUI;
+    private SupplierGUI actorGUI;
 
     public AppController() {
         init();
@@ -28,8 +30,13 @@ public class AppController {
 
         // Adapter
         // GUIs
-        filmGUI = new FilmGUI();
+        filmGUI = new ProductGUI();
         filmGUI.setVisible(true);
+        
+        actorGUI = new SupplierGUI();
+        actorGUI.setVisible(true);
+        
+        
     }
 
     public static void main(String args[]) {

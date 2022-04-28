@@ -25,7 +25,6 @@ package de.edv.model.db;
 
 import de.edv.ProductsAdapter;
 import de.edv.model.exception.ExceptionKino;
-import de.edv.model.data.Actor;
 import de.edv.model.data.Product;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -52,8 +51,9 @@ public class ProductsAdapterDB extends ProductsAdapter {
             ResultSet res = db.query("SELECT * FROM products;");
             while (res.next()) {
                 productsList.add(new Product(res.getInt(1), res.getString(2), res.getInt(3),
-                        res.getInt(4), res.getInt(5), res.getInt(6), res.getInt(7), res.getInt(8), res.getInt(9), res.getBoolean(10)));
+                        res.getInt(4), res.getString(5), res.getInt(6), res.getInt(7), res.getInt(8), res.getInt(9), res.getBoolean(10)));
             }
+            db.closeStatement();
         } catch (ExceptionKino ex) {
             Logger.getLogger(ProductsAdapterDB.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -69,24 +69,30 @@ public class ProductsAdapterDB extends ProductsAdapter {
                     + "('" + product.getProductName() + "','" + product.getSupplierID() + "','" + product.getCategoryID() + "','" 
                     + product.getQuantityPerUnit() + "','" + product.getUnitPrice() + "','" + product.getUnitsInStock() + "','" 
                     + product.getUnitsOnOrder() + "','" + product.getReorderLevel() + "','" + product.isDiscontinued() + "')");
+            db.closeStatement();
         } catch (ExceptionKino ex) {
             Logger.getLogger(ProductsAdapterDB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void update(Actor actor) {
+    public void update(Product product) {
         try {
-            db.queryDML("UPDATE person(PersonID, Name, Vorname) VALUES "
-                    + "(" + actor.getActor_id() + ",'" + actor.getLast_name() + "','" + actor.getFirst_name() + "')");
+            db.queryDML("UPDATE products(ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued)"
+                    + "VALUES "
+                    + "('" + product.getProductName() + "','" + product.getSupplierID() + "','" + product.getCategoryID() + "','" 
+                    + product.getQuantityPerUnit() + "','" + product.getUnitPrice() + "','" + product.getUnitsInStock() + "','" 
+                    + product.getUnitsOnOrder() + "','" + product.getReorderLevel() + "','" + product.isDiscontinued() + "')");
+            db.closeStatement();
         } catch (ExceptionKino ex) {
             Logger.getLogger(ProductsAdapterDB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void delete(Actor actor) {
+    public void delete(Product product) {
         try {
-            db.queryDML("DELETE FROM person WHERE "
-                    + "Name='" + actor.getLast_name() + "' AND Vorname='" + actor.getFirst_name() + "'");
+            db.queryDML("DELETE FROM products WHERE "
+                    + "ProductID=" + product.getProductID()+"");
+            db.closeStatement();
         } catch (ExceptionKino ex) {
             Logger.getLogger(ProductsAdapterDB.class.getName()).log(Level.SEVERE, null, ex);
         }

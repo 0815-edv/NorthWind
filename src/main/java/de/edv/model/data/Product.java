@@ -33,14 +33,14 @@ public class Product {
     private String productName;
     private int supplierID;
     private int categoryID;
-    private int quantityPerUnit;
+    private String quantityPerUnit;
     private int unitPrice;
     private int unitsInStock;
     private int unitsOnOrder;
     private int reorderLevel;
     private boolean discontinued;
 
-    public Product(int productID, String productName, int supplierID, int categoryID, int quantityPerUnit, int unitPrice, int unitsInStock, int unitsOnOrder, int reorderLevel, boolean discontinued) {
+    public Product(int productID, String productName, int supplierID, int categoryID, String quantityPerUnit, int unitPrice, int unitsInStock, int unitsOnOrder, int reorderLevel, boolean discontinued) {
         this.productID = productID;
         this.productName = productName;
         this.supplierID = supplierID;
@@ -89,11 +89,11 @@ public class Product {
         this.categoryID = categoryID;
     }
 
-    public int getQuantityPerUnit() {
+    public String getQuantityPerUnit() {
         return quantityPerUnit;
     }
 
-    public void setQuantityPerUnit(int quantityPerUnit) {
+    public void setQuantityPerUnit(String quantityPerUnit) {
         this.quantityPerUnit = quantityPerUnit;
     }
 
@@ -135,5 +135,9 @@ public class Product {
 
     public void setDiscontinued(boolean discontinued) {
         this.discontinued = discontinued;
+    }
+    
+    public String toString(){
+        return this.productName;
     }
 }

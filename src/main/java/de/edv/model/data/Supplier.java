@@ -27,7 +27,7 @@ package de.edv.model.data;
  *
  * @author Markus
  */
-public class Suppliers {
+public class Supplier {
 
     private int supplierID;
     private String companyName;
@@ -42,7 +42,7 @@ public class Suppliers {
     private String fax;
     private String homePage;
 
-    public Suppliers(int supplierID, String companyName, String contactName, String contavtTitle, String address, String city, String region, String postalCode, String country, String phone, String fax, String homePage) {
+    public Supplier(int supplierID, String companyName, String contactName, String contavtTitle, String address, String city, String region, String postalCode, String country, String phone, String fax, String homePage) {
         this.supplierID = supplierID;
         this.companyName = companyName;
         this.contactName = contactName;
@@ -57,7 +57,7 @@ public class Suppliers {
         this.homePage = homePage;
     }
 
-    public Suppliers() {
+    public Supplier() {
 
     }
 
@@ -155,5 +155,9 @@ public class Suppliers {
 
     public void setHomePage(String homePage) {
         this.homePage = homePage;
+    }
+    
+    public String toString(){
+        return this.companyName;
     }
 }

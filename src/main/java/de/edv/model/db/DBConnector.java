@@ -62,12 +62,29 @@ public abstract class DBConnector {
         }
     }
 
+    /**
+     * Create Savepoint
+     * @throws SQLException 
+     */
     public void createSavepoint() throws SQLException{
         save = connection.setSavepoint();
     }
     
+    /**
+     * Restore to Savepoint
+     * @throws SQLException 
+     */
     public void restoreSavepoint() throws SQLException{
-        connection.rollback(save);
+        if(save != null)
+            connection.rollback(save);
+    }
+    
+    /**
+     * Commit Changes to Database
+     * @throws SQLException 
+     */
+    public void commitChanges() throws SQLException{
+        connection.commit();
     }
     
     /**
@@ -78,15 +95,16 @@ public abstract class DBConnector {
      * @return Resultset der Abfrage
      */
     public ResultSet query(String sqlString) throws ExceptionKino {
+        Savepoint s = null;
         try {
+            s = connection.setSavepoint();          // Create Savepoint
             stat = connection.createStatement();    // Statement erzeugen
             connection.setAutoCommit(false);        // Disable Autocommit
             stat.executeQuery(sqlString);           // Statement ausführen
             rs = stat.getResultSet();               // Resultset holen
-            connection.commit();                    // Conmmit Changes
         } catch (SQLException ex) {
             try {
-                connection.rollback();              // Rollback Changes
+                connection.rollback(s);              // Rollback Changes
             } catch (SQLException ex1) {
                 Logger.getLogger(DBConnector.class.getName()).log(Level.SEVERE, null, ex1);
             }
@@ -102,14 +120,15 @@ public abstract class DBConnector {
      * @param sqlString String mit der DML-SQL-Abfrage (insert, update, delete)
      */
     public void queryDML(String sqlString) throws ExceptionKino {
+        Savepoint s = null;
         try {
+            s = connection.setSavepoint();          // Create Savepoint
             stat = connection.createStatement();     // Statement erzeugen
             connection.setAutoCommit(false);         // Disable Autocommit
             stat.executeUpdate(sqlString);           // Statement ausführen
-            connection.commit();                     // Conmmit Changes
         } catch (SQLException ex) {
             try {
-                connection.rollback();               // Rollback Changes
+                connection.rollback(s);               // Rollback Changes
             } catch (SQLException ex1) {
                 Logger.getLogger(DBConnector.class.getName()).log(Level.SEVERE, null, ex1);
             }
@@ -123,6 +142,7 @@ public abstract class DBConnector {
      */
     public void closeStatement() throws ExceptionKino {
         try {
+            connection.commit();
             rs.close();                       // Resultset schließen
             stat.close();                     // Statement schließen
         } catch (SQLException ex) {

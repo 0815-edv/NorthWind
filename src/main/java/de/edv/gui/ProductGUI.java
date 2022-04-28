@@ -1,17 +1,38 @@
 package de.edv.gui;
 
+import de.edv.ProductsAdapter;
+import de.edv.model.db.DBConnector;
+import de.edv.model.db.DBConnectorMySQL;
+import de.edv.model.db.ProductsAdapterDB;
+import de.edv.model.exception.ExceptionKino;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Oliver S.
  * @version 1.0
  */
-public class ActorGUI extends javax.swing.JFrame implements PropertyChangeListener {
+public class ProductGUI extends javax.swing.JFrame implements PropertyChangeListener {
 
-    public ActorGUI() {
+    public ProductGUI() {
         initComponents();
+        loadData();
+    }
+
+    private void loadData() {
+        try {
+            ProductsAdapterDB fa = new ProductsAdapterDB();
+            DBConnector db = new DBConnectorMySQL("northwind", "kino", "kino", 3306, "localhost");
+            db.connect();
+            fa.productListeDB(db);
+            ProductsAdapter f = fa;
+            lstOverview.setListData(fa.get().toArray());
+        } catch (ExceptionKino ex) {
+            Logger.getLogger(ProductGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -30,8 +51,12 @@ public class ActorGUI extends javax.swing.JFrame implements PropertyChangeListen
         pnlFilminfo = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        txfName = new javax.swing.JTextField();
-        txfVorname = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        txfFilm = new javax.swing.JTextField();
+        txfJahr = new javax.swing.JTextField();
+        txfFSK = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        txfLaenge = new javax.swing.JTextField();
         pnlControl = new javax.swing.JPanel();
         btnUpdate = new javax.swing.JButton();
         btnInsert = new javax.swing.JButton();
@@ -51,7 +76,7 @@ public class ActorGUI extends javax.swing.JFrame implements PropertyChangeListen
             pnlOverviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlOverviewLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
                 .addContainerGap())
         );
         pnlOverviewLayout.setVerticalGroup(
@@ -68,9 +93,13 @@ public class ActorGUI extends javax.swing.JFrame implements PropertyChangeListen
 
         pnlFilminfo.setBorder(javax.swing.BorderFactory.createTitledBorder("Details"));
 
-        jLabel5.setText("Name");
+        jLabel5.setText("Film");
 
-        jLabel7.setText("Vorname");
+        jLabel7.setText("Jahr");
+
+        jLabel8.setText("FSK");
+
+        jLabel1.setText("Länge");
 
         javax.swing.GroupLayout pnlFilminfoLayout = new javax.swing.GroupLayout(pnlFilminfo);
         pnlFilminfo.setLayout(pnlFilminfoLayout);
@@ -79,12 +108,19 @@ public class ActorGUI extends javax.swing.JFrame implements PropertyChangeListen
             .addGroup(pnlFilminfoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlFilminfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
                     .addComponent(jLabel7)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel1))
                 .addGap(32, 32, 32)
                 .addGroup(pnlFilminfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txfName)
-                    .addComponent(txfVorname, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txfFilm, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                    .addGroup(pnlFilminfoLayout.createSequentialGroup()
+                        .addGroup(pnlFilminfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txfFSK, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txfJahr, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                            .addComponent(txfLaenge))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlFilminfoLayout.setVerticalGroup(
@@ -93,12 +129,20 @@ public class ActorGUI extends javax.swing.JFrame implements PropertyChangeListen
                 .addContainerGap()
                 .addGroup(pnlFilminfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(txfName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txfFilm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlFilminfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(txfVorname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(170, Short.MAX_VALUE))
+                    .addComponent(txfJahr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlFilminfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(txfFSK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlFilminfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txfLaenge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(98, Short.MAX_VALUE))
         );
 
         pnlDetails.add(pnlFilminfo, java.awt.BorderLayout.CENTER);
@@ -106,15 +150,15 @@ public class ActorGUI extends javax.swing.JFrame implements PropertyChangeListen
         pnlControl.setBorder(javax.swing.BorderFactory.createTitledBorder("Änderungen"));
         pnlControl.setLayout(new java.awt.GridLayout(1, 3, 5, 0));
 
-        btnUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/Update.gif"))); // NOI18N
+        btnUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Update.gif"))); // NOI18N
         btnUpdate.setText("speichern");
         pnlControl.add(btnUpdate);
 
-        btnInsert.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/Insert.gif"))); // NOI18N
+        btnInsert.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Insert.gif"))); // NOI18N
         btnInsert.setText("anlegen");
         pnlControl.add(btnInsert);
 
-        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/Delete.gif"))); // NOI18N
+        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Delete.gif"))); // NOI18N
         btnDelete.setText("löschen");
         pnlControl.add(btnDelete);
 
@@ -129,16 +173,20 @@ public class ActorGUI extends javax.swing.JFrame implements PropertyChangeListen
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnInsert;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList lstOverview;
     private javax.swing.JPanel pnlControl;
     private javax.swing.JPanel pnlDetails;
     private javax.swing.JPanel pnlFilminfo;
     private javax.swing.JPanel pnlOverview;
-    private javax.swing.JTextField txfName;
-    private javax.swing.JTextField txfVorname;
+    private javax.swing.JTextField txfFSK;
+    private javax.swing.JTextField txfFilm;
+    private javax.swing.JTextField txfJahr;
+    private javax.swing.JTextField txfLaenge;
     // End of variables declaration//GEN-END:variables
 
     @Override
