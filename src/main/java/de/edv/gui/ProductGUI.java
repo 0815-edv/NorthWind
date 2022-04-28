@@ -4,7 +4,7 @@ import de.edv.ProductsAdapter;
 import de.edv.model.db.DBConnector;
 import de.edv.model.db.DBConnectorMySQL;
 import de.edv.model.db.ProductsAdapterDB;
-import de.edv.model.exception.ExceptionKino;
+import de.edv.model.exception.NorthwindException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.logging.Level;
@@ -30,7 +30,7 @@ public class ProductGUI extends javax.swing.JFrame implements PropertyChangeList
             fa.productListeDB(db);
             ProductsAdapter f = fa;
             lstOverview.setListData(fa.get().toArray());
-        } catch (ExceptionKino ex) {
+        } catch (NorthwindException ex) {
             Logger.getLogger(ProductGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -62,7 +62,7 @@ public class ProductGUI extends javax.swing.JFrame implements PropertyChangeList
         btnInsert = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
 
-        setTitle("Filmdetails");
+        setTitle("Productdetails");
         getContentPane().setLayout(new java.awt.GridLayout(1, 2));
 
         pnlOverview.setBorder(javax.swing.BorderFactory.createTitledBorder("Übersicht"));

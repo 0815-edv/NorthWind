@@ -32,7 +32,7 @@ public class Supplier {
     private int supplierID;
     private String companyName;
     private String contactName;
-    private String contavtTitle;
+    private String contactTitle;
     private String address;
     private String city;
     private String region;
@@ -42,11 +42,11 @@ public class Supplier {
     private String fax;
     private String homePage;
 
-    public Supplier(int supplierID, String companyName, String contactName, String contavtTitle, String address, String city, String region, String postalCode, String country, String phone, String fax, String homePage) {
+    public Supplier(int supplierID, String companyName, String contactName, String contactTitle, String address, String city, String region, String postalCode, String country, String phone, String fax, String homePage) {
         this.supplierID = supplierID;
         this.companyName = companyName;
         this.contactName = contactName;
-        this.contavtTitle = contavtTitle;
+        this.contactTitle = contactTitle;
         this.address = address;
         this.city = city;
         this.region = region;
@@ -85,12 +85,12 @@ public class Supplier {
         this.contactName = contactName;
     }
 
-    public String getContavtTitle() {
-        return contavtTitle;
+    public String getContactTitle() {
+        return contactTitle;
     }
 
-    public void setContavtTitle(String contavtTitle) {
-        this.contavtTitle = contavtTitle;
+    public void setContactTitle(String contavtTitle) {
+        this.contactTitle = contavtTitle;
     }
 
     public String getAddress() {

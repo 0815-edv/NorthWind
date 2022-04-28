@@ -1,5 +1,4 @@
 de\edv\DataSource.class
-de\edv\model\exception\ExceptionKino.class
 de\edv\gui\ProductGUI.class
 de\edv\ProductsAdapter.class
 de\edv\model\data\Supplier.class
@@ -9,7 +8,10 @@ de\edv\model\db\SuppliersAdapterDB.class
 de\edv\AppController$1.class
 de\edv\SuppliersAdapter.class
 de\edv\Adapter.class
+de\edv\model\exception\NorthwindException.class
 de\edv\model\db\ProductsAdapterDB.class
+de\edv\gui\SupplierGUI$2.class
 de\edv\AppController.class
 de\edv\gui\SupplierGUI.class
+de\edv\gui\SupplierGUI$1.class
 de\edv\model\db\DBConnector.class

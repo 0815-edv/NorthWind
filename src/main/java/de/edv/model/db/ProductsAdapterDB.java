@@ -24,7 +24,7 @@
 package de.edv.model.db;
 
 import de.edv.ProductsAdapter;
-import de.edv.model.exception.ExceptionKino;
+import de.edv.model.exception.NorthwindException;
 import de.edv.model.data.Product;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -54,7 +54,7 @@ public class ProductsAdapterDB extends ProductsAdapter {
                         res.getInt(4), res.getString(5), res.getInt(6), res.getInt(7), res.getInt(8), res.getInt(9), res.getBoolean(10)));
             }
             db.closeStatement();
-        } catch (ExceptionKino ex) {
+        } catch (NorthwindException ex) {
             Logger.getLogger(ProductsAdapterDB.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(ProductsAdapterDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -70,7 +70,7 @@ public class ProductsAdapterDB extends ProductsAdapter {
                     + product.getQuantityPerUnit() + "','" + product.getUnitPrice() + "','" + product.getUnitsInStock() + "','" 
                     + product.getUnitsOnOrder() + "','" + product.getReorderLevel() + "','" + product.isDiscontinued() + "')");
             db.closeStatement();
-        } catch (ExceptionKino ex) {
+        } catch (NorthwindException ex) {
             Logger.getLogger(ProductsAdapterDB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -83,7 +83,7 @@ public class ProductsAdapterDB extends ProductsAdapter {
                     + product.getQuantityPerUnit() + "','" + product.getUnitPrice() + "','" + product.getUnitsInStock() + "','" 
                     + product.getUnitsOnOrder() + "','" + product.getReorderLevel() + "','" + product.isDiscontinued() + "')");
             db.closeStatement();
-        } catch (ExceptionKino ex) {
+        } catch (NorthwindException ex) {
             Logger.getLogger(ProductsAdapterDB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -93,7 +93,7 @@ public class ProductsAdapterDB extends ProductsAdapter {
             db.queryDML("DELETE FROM products WHERE "
                     + "ProductID=" + product.getProductID()+"");
             db.closeStatement();
-        } catch (ExceptionKino ex) {
+        } catch (NorthwindException ex) {
             Logger.getLogger(ProductsAdapterDB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

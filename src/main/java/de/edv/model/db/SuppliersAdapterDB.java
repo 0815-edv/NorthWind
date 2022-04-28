@@ -24,7 +24,7 @@
 package de.edv.model.db;
 
 import de.edv.SuppliersAdapter;
-import de.edv.model.exception.ExceptionKino;
+import de.edv.model.exception.NorthwindException;
 import de.edv.model.data.Supplier;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -55,7 +55,7 @@ public class SuppliersAdapterDB extends SuppliersAdapter {
                         res.getString(9), res.getString(10), res.getString(11), res.getString(12)));
             }
             db.closeStatement();
-        } catch (ExceptionKino ex) {
+        } catch (NorthwindException ex) {
             Logger.getLogger(SuppliersAdapterDB.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(SuppliersAdapterDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -67,12 +67,12 @@ public class SuppliersAdapterDB extends SuppliersAdapter {
         try {
             db.queryDML("INSERT INTO suppliers(CompanyName, ContactName, ContactTitle, Address, City, Region, PostalCode, Country, Phone, Fax, HomePage)"
                     + "VALUES "
-                    + "('" + supplier.getCompanyName() + "','" + supplier.getContactName() + "','" + supplier.getContavtTitle() + "','"
+                    + "('" + supplier.getCompanyName() + "','" + supplier.getContactName() + "','" + supplier.getContactTitle() + "','"
                     + supplier.getAddress() + "','" + supplier.getCity() + "','" + supplier.getRegion() + "','"
                     + supplier.getPostalCode() + "','" + supplier.getCountry() + "','" + supplier.getPhone() 
                     + "','" + supplier.getFax() + "','" + supplier.getHomePage() + "')");
             db.closeStatement();
-        } catch (ExceptionKino ex) {
+        } catch (NorthwindException ex) {
             Logger.getLogger(SuppliersAdapterDB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -81,12 +81,12 @@ public class SuppliersAdapterDB extends SuppliersAdapter {
         try {
             db.queryDML("UPDATE suppliers(CompanyName, ContactName, ContactTitle, Address, City, Region, PostalCode, Country, Phone, Fax, HomePage)"
                     + "VALUES "
-                    + "('" + supplier.getCompanyName() + "','" + supplier.getContactName() + "','" + supplier.getContavtTitle() + "','"
+                    + "('" + supplier.getCompanyName() + "','" + supplier.getContactName() + "','" + supplier.getContactTitle() + "','"
                     + supplier.getAddress() + "','" + supplier.getCity() + "','" + supplier.getRegion() + "','"
                     + supplier.getPostalCode() + "','" + supplier.getCountry() + "','" + supplier.getPhone() 
                     + "','" + supplier.getFax() + "','" + supplier.getHomePage() + "')");
             db.closeStatement();
-        } catch (ExceptionKino ex) {
+        } catch (NorthwindException ex) {
             Logger.getLogger(SuppliersAdapterDB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -96,7 +96,7 @@ public class SuppliersAdapterDB extends SuppliersAdapter {
             db.queryDML("DELETE FROM suppliers WHERE "
                     + "ProductID=" + supplier.getSupplierID() + "");
             db.closeStatement();
-        } catch (ExceptionKino ex) {
+        } catch (NorthwindException ex) {
             Logger.getLogger(SuppliersAdapterDB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

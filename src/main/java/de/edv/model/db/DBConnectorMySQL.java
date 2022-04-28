@@ -1,6 +1,6 @@
 package de.edv.model.db;
 
-import de.edv.model.exception.ExceptionKino;
+import de.edv.model.exception.NorthwindException;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -21,12 +21,12 @@ public class DBConnectorMySQL extends DBConnector {
      *
      * @return true, wenn die Verbindung aufgebaut werden konnte, sonst false
      */
-    public void connect() throws ExceptionKino {
+    public void connect() throws NorthwindException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + db, user, pw);
         } catch (ClassNotFoundException | SQLException ex) {
-            throw new ExceptionKino("Datenbank", "Verbindung konnte nicht geöffnet werden.");
+            throw new NorthwindException("Datenbank", "Verbindung konnte nicht geöffnet werden.");
         }
     }
 }

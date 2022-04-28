@@ -1,6 +1,6 @@
 package de.edv.model.db;
 
-import de.edv.model.exception.ExceptionKino;
+import de.edv.model.exception.NorthwindException;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,19 +46,19 @@ public abstract class DBConnector {
      * Versucht eine Verbindung zum Datenbank-Server aufzubauen.
      *
      */
-    public abstract void connect() throws ExceptionKino;
+    public abstract void connect() throws NorthwindException;
 
     /**
      * Baut die Verbindung zum Datenbank-Server ab und schließt dabei auch das
      * Statement.
      *
      */
-    public void disconnect() throws ExceptionKino {
+    public void disconnect() throws NorthwindException {
         try {
             closeStatement();
             connection.close();                      // Verbindung schließen
         } catch (SQLException ex) {
-            throw new ExceptionKino("Datenbank", "Verbindung konnte nicht geschlossen werden.");
+            throw new NorthwindException("Datenbank", "Verbindung konnte nicht geschlossen werden.");
         }
     }
 
@@ -94,7 +94,7 @@ public abstract class DBConnector {
      * @param sqlString String mit der SQL-Abfrage
      * @return Resultset der Abfrage
      */
-    public ResultSet query(String sqlString) throws ExceptionKino {
+    public ResultSet query(String sqlString) throws NorthwindException {
         Savepoint s = null;
         try {
             s = connection.setSavepoint();          // Create Savepoint
@@ -108,7 +108,7 @@ public abstract class DBConnector {
             } catch (SQLException ex1) {
                 Logger.getLogger(DBConnector.class.getName()).log(Level.SEVERE, null, ex1);
             }
-            throw new ExceptionKino("Datenbank", ex.getMessage());
+            throw new NorthwindException("Datenbank", ex.getMessage());
         }
         return rs;
     }
@@ -119,7 +119,7 @@ public abstract class DBConnector {
      *
      * @param sqlString String mit der DML-SQL-Abfrage (insert, update, delete)
      */
-    public void queryDML(String sqlString) throws ExceptionKino {
+    public void queryDML(String sqlString) throws NorthwindException {
         Savepoint s = null;
         try {
             s = connection.setSavepoint();          // Create Savepoint
@@ -132,7 +132,7 @@ public abstract class DBConnector {
             } catch (SQLException ex1) {
                 Logger.getLogger(DBConnector.class.getName()).log(Level.SEVERE, null, ex1);
             }
-            throw new ExceptionKino("Datenbank", ex.getMessage());
+            throw new NorthwindException("Datenbank", ex.getMessage());
         }
     }
 
@@ -140,13 +140,13 @@ public abstract class DBConnector {
      * Schließt das Resultset und das Statement.
      *
      */
-    public void closeStatement() throws ExceptionKino {
+    public void closeStatement() throws NorthwindException {
         try {
             connection.commit();
             rs.close();                       // Resultset schließen
             stat.close();                     // Statement schließen
         } catch (SQLException ex) {
-            throw new ExceptionKino("Datenbank", "Staement konnte nicht geschlossen werden.");
+            throw new NorthwindException("Datenbank", "Staement konnte nicht geschlossen werden.");
         }
     }
 }
