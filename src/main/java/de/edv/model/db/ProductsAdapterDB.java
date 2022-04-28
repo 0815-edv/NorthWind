@@ -66,9 +66,9 @@ public class ProductsAdapterDB extends ProductsAdapter {
         try {
             db.queryDML("INSERT INTO products(ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued)"
                     + "VALUES "
-                    + "('" + product.getProductName() + "','" + product.getSupplierID() + "','" + product.getCategoryID() + "','" 
-                    + product.getQuantityPerUnit() + "','" + product.getUnitPrice() + "','" + product.getUnitsInStock() + "','" 
-                    + product.getUnitsOnOrder() + "','" + product.getReorderLevel() + "','" + product.isDiscontinued() + "')");
+                    + "('" + product.getProductName() + "'," + product.getSupplierID() + "," + product.getCategoryID() + ",'" 
+                    + product.getQuantityPerUnit() + "'," + product.getUnitPrice() + "," + product.getUnitsInStock() + "," 
+                    + product.getUnitsOnOrder() + "," + product.getReorderLevel() + "," + product.isDiscontinued() + ")");
             db.closeStatement();
         } catch (NorthwindException ex) {
             Logger.getLogger(ProductsAdapterDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -91,7 +91,7 @@ public class ProductsAdapterDB extends ProductsAdapter {
     public void delete(Product product) {
         try {
             db.queryDML("DELETE FROM products WHERE "
-                    + "ProductID=" + product.getProductID()+"");
+                    + "ProductName='" + product.getProductName()+"'");
             db.closeStatement();
         } catch (NorthwindException ex) {
             Logger.getLogger(ProductsAdapterDB.class.getName()).log(Level.SEVERE, null, ex);

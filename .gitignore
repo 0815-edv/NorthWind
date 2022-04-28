@@ -23,3 +23,7 @@
 hs_err_pid*
 target/classes/.netbeans_automatic_build
 target/test-classes/.netbeans_automatic_build
+target/surefire-reports/sql.ProductTest.txt
+target/surefire-reports/sql.SupplierTest.txt
+target/surefire-reports/TEST-sql.ProductTest.xml
+target/surefire-reports/TEST-sql.SupplierTest.xml

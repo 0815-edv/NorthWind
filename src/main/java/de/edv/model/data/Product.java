@@ -129,8 +129,11 @@ public class Product {
         this.reorderLevel = reorderLevel;
     }
 
-    public boolean isDiscontinued() {
-        return discontinued;
+    public int isDiscontinued() {
+        if(this.discontinued)
+            return 1;
+        else
+            return 0;
     }
 
     public void setDiscontinued(boolean discontinued) {

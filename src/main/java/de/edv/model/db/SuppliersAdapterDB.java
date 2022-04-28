@@ -94,7 +94,7 @@ public class SuppliersAdapterDB extends SuppliersAdapter {
     public void delete(Supplier supplier) {
         try {
             db.queryDML("DELETE FROM suppliers WHERE "
-                    + "ProductID=" + supplier.getSupplierID() + "");
+                    + "CompanyName='" + supplier.getCompanyName()+ "'");
             db.closeStatement();
         } catch (NorthwindException ex) {
             Logger.getLogger(SuppliersAdapterDB.class.getName()).log(Level.SEVERE, null, ex);

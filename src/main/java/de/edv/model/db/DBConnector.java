@@ -17,7 +17,7 @@ public abstract class DBConnector {
     protected Connection connection;
     private Statement stat;
     private ResultSet rs;
-    private Savepoint save;
+    private static Savepoint save;
     protected final String db;
     protected final String user;
     protected final String pw;
@@ -97,8 +97,8 @@ public abstract class DBConnector {
     public ResultSet query(String sqlString) throws NorthwindException {
         Savepoint s = null;
         try {
-            s = connection.setSavepoint();          // Create Savepoint
             stat = connection.createStatement();    // Statement erzeugen
+            s = connection.setSavepoint();          // Create Savepoint
             connection.setAutoCommit(false);        // Disable Autocommit
             stat.executeQuery(sqlString);           // Statement ausführen
             rs = stat.getResultSet();               // Resultset holen
@@ -122,8 +122,8 @@ public abstract class DBConnector {
     public void queryDML(String sqlString) throws NorthwindException {
         Savepoint s = null;
         try {
-            s = connection.setSavepoint();          // Create Savepoint
             stat = connection.createStatement();     // Statement erzeugen
+            s = connection.setSavepoint();           // Create Savepoint
             connection.setAutoCommit(false);         // Disable Autocommit
             stat.executeUpdate(sqlString);           // Statement ausführen
         } catch (SQLException ex) {
@@ -143,7 +143,6 @@ public abstract class DBConnector {
     public void closeStatement() throws NorthwindException {
         try {
             connection.commit();
-            rs.close();                       // Resultset schließen
             stat.close();                     // Statement schließen
         } catch (SQLException ex) {
             throw new NorthwindException("Datenbank", "Staement konnte nicht geschlossen werden.");

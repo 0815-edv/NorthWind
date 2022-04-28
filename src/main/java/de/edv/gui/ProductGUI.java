@@ -264,7 +264,7 @@ public class ProductGUI extends javax.swing.JFrame implements PropertyChangeList
                 }
             }
 
-            if (p.isDiscontinued()) {
+            if (p.isDiscontinued() == 1) {
                 jdiscontinued_yes.setSelected(true);
             } else {
                 jdiscontinued_no.setSelected(true);
