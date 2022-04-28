@@ -23,7 +23,6 @@
  */
 package de.edv.model.db;
 
-import de.edv.ProductsAdapter;
 import de.edv.SuppliersAdapter;
 import de.edv.model.exception.ExceptionKino;
 import de.edv.model.data.Supplier;
