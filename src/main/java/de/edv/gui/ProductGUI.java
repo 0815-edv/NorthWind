@@ -1,12 +1,17 @@
 package de.edv.gui;
 
 import de.edv.ProductsAdapter;
+import de.edv.SuppliersAdapter;
+import de.edv.model.data.Product;
+import de.edv.model.data.Supplier;
 import de.edv.model.db.DBConnector;
 import de.edv.model.db.DBConnectorMySQL;
 import de.edv.model.db.ProductsAdapterDB;
+import de.edv.model.db.SuppliersAdapterDB;
 import de.edv.model.exception.NorthwindException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,14 +27,20 @@ public class ProductGUI extends javax.swing.JFrame implements PropertyChangeList
         loadData();
     }
 
+    private List<Supplier> suppliers;
+
     private void loadData() {
         try {
             ProductsAdapterDB fa = new ProductsAdapterDB();
+            SuppliersAdapterDB sa = new SuppliersAdapterDB();
             DBConnector db = new DBConnectorMySQL("northwind", "kino", "kino", 3306, "localhost");
             db.connect();
             fa.productListeDB(db);
+            sa.supplierListeDB(db);
             ProductsAdapter f = fa;
-            lstOverview.setListData(fa.get().toArray());
+            SuppliersAdapter s = sa;
+            lstOverview.setListData(f.get().toArray());
+            suppliers = s.get();
         } catch (NorthwindException ex) {
             Logger.getLogger(ProductGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -52,11 +63,20 @@ public class ProductGUI extends javax.swing.JFrame implements PropertyChangeList
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        txfFilm = new javax.swing.JTextField();
-        txfJahr = new javax.swing.JTextField();
-        txfFSK = new javax.swing.JTextField();
+        txfProductName = new javax.swing.JTextField();
+        txfSupplierName = new javax.swing.JTextField();
+        txfQuantity = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        txfLaenge = new javax.swing.JTextField();
+        txfPrice = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        txfStock = new javax.swing.JTextField();
+        txfLevel = new javax.swing.JTextField();
+        txfOrder = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jdiscontinued_yes = new javax.swing.JRadioButton();
+        jdiscontinued_no = new javax.swing.JRadioButton();
         pnlControl = new javax.swing.JPanel();
         btnUpdate = new javax.swing.JButton();
         btnInsert = new javax.swing.JButton();
@@ -68,6 +88,11 @@ public class ProductGUI extends javax.swing.JFrame implements PropertyChangeList
         pnlOverview.setBorder(javax.swing.BorderFactory.createTitledBorder("Übersicht"));
 
         lstOverview.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        lstOverview.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                lstOverviewValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(lstOverview);
 
         javax.swing.GroupLayout pnlOverviewLayout = new javax.swing.GroupLayout(pnlOverview);
@@ -83,7 +108,7 @@ public class ProductGUI extends javax.swing.JFrame implements PropertyChangeList
             pnlOverviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlOverviewLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -93,13 +118,25 @@ public class ProductGUI extends javax.swing.JFrame implements PropertyChangeList
 
         pnlFilminfo.setBorder(javax.swing.BorderFactory.createTitledBorder("Details"));
 
-        jLabel5.setText("Film");
+        jLabel5.setText("ProductName");
 
-        jLabel7.setText("Jahr");
+        jLabel7.setText("SupplierName");
 
-        jLabel8.setText("FSK");
+        jLabel8.setText("QuantityPerUnit");
 
-        jLabel1.setText("Länge");
+        jLabel1.setText("UnitPrice");
+
+        jLabel2.setText("UnitsInStock");
+
+        jLabel3.setText("UnitsOnOrder");
+
+        jLabel4.setText("ReorderLevel");
+
+        jLabel6.setText("Discontinued");
+
+        jdiscontinued_yes.setText("Ja");
+
+        jdiscontinued_no.setText("Nein");
 
         javax.swing.GroupLayout pnlFilminfoLayout = new javax.swing.GroupLayout(pnlFilminfo);
         pnlFilminfo.setLayout(pnlFilminfoLayout);
@@ -111,17 +148,23 @@ public class ProductGUI extends javax.swing.JFrame implements PropertyChangeList
                     .addComponent(jLabel8)
                     .addComponent(jLabel7)
                     .addComponent(jLabel5)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel6))
                 .addGap(32, 32, 32)
                 .addGroup(pnlFilminfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txfFilm, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
-                    .addGroup(pnlFilminfoLayout.createSequentialGroup()
-                        .addGroup(pnlFilminfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txfFSK, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txfJahr, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                            .addComponent(txfLaenge))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addComponent(txfPrice)
+                    .addComponent(txfStock)
+                    .addComponent(txfOrder)
+                    .addComponent(txfLevel)
+                    .addComponent(txfProductName)
+                    .addComponent(txfSupplierName)
+                    .addComponent(txfQuantity)
+                    .addComponent(jdiscontinued_yes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jdiscontinued_no, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE))
+                .addGap(28, 28, 28))
         );
         pnlFilminfoLayout.setVerticalGroup(
             pnlFilminfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -129,20 +172,42 @@ public class ProductGUI extends javax.swing.JFrame implements PropertyChangeList
                 .addContainerGap()
                 .addGroup(pnlFilminfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(txfFilm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txfProductName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlFilminfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(txfJahr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txfSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlFilminfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(txfFSK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txfQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlFilminfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txfLaenge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(98, Short.MAX_VALUE))
+                    .addComponent(txfPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlFilminfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txfStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlFilminfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txfOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(10, 10, 10)
+                .addGroup(pnlFilminfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txfLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jdiscontinued_yes)
+                .addGroup(pnlFilminfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlFilminfoLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jdiscontinued_no)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFilminfoLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel6)
+                        .addGap(29, 29, 29))))
         );
 
         pnlDetails.add(pnlFilminfo, java.awt.BorderLayout.CENTER);
@@ -169,24 +234,72 @@ public class ProductGUI extends javax.swing.JFrame implements PropertyChangeList
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void emptyTextBox() {
+        txfLevel.setText("");
+        txfOrder.setText("");
+        txfPrice.setText("");
+        txfProductName.setText("");
+        txfQuantity.setText("");
+        txfStock.setText("");
+        txfSupplierName.setText("");
+        jdiscontinued_yes.setSelected(false);
+        jdiscontinued_no.setSelected(false);
+    }
+
+    private void lstOverviewValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstOverviewValueChanged
+        // TODO add your handling code here:
+        emptyTextBox();
+        if (lstOverview != null) {
+            Product p = (Product) lstOverview.getSelectedValue();
+            txfLevel.setText(String.valueOf(p.getReorderLevel()));
+            txfOrder.setText(String.valueOf(p.getUnitsOnOrder()));
+            txfPrice.setText(String.valueOf(p.getUnitPrice()));
+            txfProductName.setText(p.getProductName());
+            txfQuantity.setText(String.valueOf(p.getQuantityPerUnit()));
+            txfStock.setText(String.valueOf(p.getUnitsInStock()));
+
+            for (Supplier s : suppliers) {
+                if (s.getSupplierID() == p.getSupplierID()) {
+                    txfSupplierName.setText(s.getCompanyName());
+                }
+            }
+
+            if (p.isDiscontinued()) {
+                jdiscontinued_yes.setSelected(true);
+            } else {
+                jdiscontinued_no.setSelected(true);
+            }
+
+        }
+    }//GEN-LAST:event_lstOverviewValueChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnInsert;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JRadioButton jdiscontinued_no;
+    private javax.swing.JRadioButton jdiscontinued_yes;
     private javax.swing.JList lstOverview;
     private javax.swing.JPanel pnlControl;
     private javax.swing.JPanel pnlDetails;
     private javax.swing.JPanel pnlFilminfo;
     private javax.swing.JPanel pnlOverview;
-    private javax.swing.JTextField txfFSK;
-    private javax.swing.JTextField txfFilm;
-    private javax.swing.JTextField txfJahr;
-    private javax.swing.JTextField txfLaenge;
+    private javax.swing.JTextField txfLevel;
+    private javax.swing.JTextField txfOrder;
+    private javax.swing.JTextField txfPrice;
+    private javax.swing.JTextField txfProductName;
+    private javax.swing.JTextField txfQuantity;
+    private javax.swing.JTextField txfStock;
+    private javax.swing.JTextField txfSupplierName;
     // End of variables declaration//GEN-END:variables
 
     @Override
